@@ -1,1 +1,1 @@
-# osu_rust
+# osu-rust

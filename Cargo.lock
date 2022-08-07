@@ -3,5 +3,5 @@
 version = 3
 
 [[package]]
-name = "osu_rust"
+name = "osu-rust"
 version = "0.1.0"
