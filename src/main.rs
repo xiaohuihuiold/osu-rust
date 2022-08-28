@@ -1,4 +1,4 @@
-extern crate sdl2;
+mod beatmap;
 
 use sdl2::pixels::Color;
 use sdl2::event::Event;
@@ -27,10 +27,10 @@ pub fn main() {
         canvas.clear();
         for event in event_pump.poll_iter() {
             match event {
-                Event::Quit {..} |
+                Event::Quit { .. } |
                 Event::KeyDown { keycode: Some(Keycode::Escape), .. } => {
-                    break 'running
-                },
+                    break 'running;
+                }
                 _ => {}
             }
         }
