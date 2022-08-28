@@ -1,4 +1,5 @@
 mod beatmap;
+mod graphics;
 
 use sdl2::event::Event;
 use sdl2::keyboard::Keycode;
