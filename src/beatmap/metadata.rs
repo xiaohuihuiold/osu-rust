@@ -1,3 +1,5 @@
+const SECTION_NAME: &str = "[Metadata]";
+
 /// 谱面元数据
 #[derive(Debug)]
 pub struct Metadata {
