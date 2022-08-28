@@ -45,7 +45,7 @@ pub struct General {
     pub letterbox_in_breaks: bool,
     pub use_skin_sprites: bool,
     pub overlay_position: OverlayPosition,
-    pub skin_preference: String,
+    pub skin_preference: Option<String>,
     pub epilepsy_warning: bool,
     pub countdown_offset: i32,
     pub spacial_style: bool,
@@ -53,6 +53,7 @@ pub struct General {
     pub samples_match_playback_rate: bool,
 }
 
+/// 默认值填充
 impl Default for General {
     fn default() -> Self {
         General {
@@ -66,7 +67,7 @@ impl Default for General {
             letterbox_in_breaks: false,
             use_skin_sprites: false,
             overlay_position: OverlayPosition::NoChange,
-            skin_preference: String::new(),
+            skin_preference: None,
             epilepsy_warning: false,
             countdown_offset: 0,
             spacial_style: false,
