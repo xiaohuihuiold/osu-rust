@@ -15,14 +15,21 @@ impl LerpCopy for Color {
 
 #[cfg(test)]
 mod tests {
-    use crate::graphics::lerp::LerpCopy;
-    use sdl2::pixels::Color;
+    use super::*;
 
     #[test]
-    fn blue_to_red() {
+    fn lerp_blue_to_red() {
         assert_eq!(
             Color::lerp(Color::BLUE, Color::RED, 0.5),
             Color::RGB(127, 0, 127)
+        );
+        assert_eq!(
+            Color::lerp(Color::BLUE, Color::RED, -0.5),
+            Color::RGB(0, 0, 255)
+        );
+        assert_eq!(
+            Color::lerp(Color::BLUE, Color::RED, 1.1),
+            Color::RGB(255, 0, 0)
         );
     }
 }
