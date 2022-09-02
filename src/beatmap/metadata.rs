@@ -18,7 +18,7 @@ pub struct Metadata {
 /// 默认值填充
 impl Default for Metadata {
     fn default() -> Self {
-        Metadata {
+        Self {
             title: None,
             title_unicode: None,
             artist: None,

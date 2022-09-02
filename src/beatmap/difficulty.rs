@@ -14,7 +14,7 @@ pub struct Difficulty {
 /// 默认值
 impl Default for Difficulty {
     fn default() -> Self {
-        Difficulty {
+        Self {
             hp_drain_rate: 0.0,
             circle_size: 0.0,
             overall_difficulty: 0.0,

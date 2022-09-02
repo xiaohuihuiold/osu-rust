@@ -58,7 +58,7 @@ pub struct General {
 /// 默认值填充
 impl Default for General {
     fn default() -> Self {
-        General {
+        Self {
             audio_file_name: String::new(),
             audio_lead_in: 0,
             preview_time: -1,
