@@ -11,8 +11,8 @@ pub struct Metadata {
     version: Option<String>,
     source: Option<String>,
     tags: Option<Vec<String>>,
-    beatmap_id: i32,
-    beatmap_set_id: i32,
+    beatmap_id: i64,
+    beatmap_set_id: i64,
 }
 
 /// 默认值填充

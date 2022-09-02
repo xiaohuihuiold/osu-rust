@@ -3,12 +3,12 @@ const SECTION_NAME: &str = "[Difficulty]";
 /// 谱面难度
 #[derive(Debug)]
 pub struct Difficulty {
-    pub hp_drain_rate: f32,
-    pub circle_size: f32,
-    pub overall_difficulty: f32,
-    pub approach_rate: f32,
-    pub slider_multiplier: f32,
-    pub slider_tick_rate: f32,
+    pub hp_drain_rate: f64,
+    pub circle_size: f64,
+    pub overall_difficulty: f64,
+    pub approach_rate: f64,
+    pub slider_multiplier: f64,
+    pub slider_tick_rate: f64,
 }
 
 /// 默认值
