@@ -9,3 +9,14 @@ pub struct BeatmapInfo {
     metadata: Option<Metadata>,
     difficulty: Option<Difficulty>,
 }
+
+/// 默认信息
+impl Default for BeatmapInfo {
+    fn default() -> Self {
+        Self {
+            general: None,
+            metadata: None,
+            difficulty: None,
+        }
+    }
+}
