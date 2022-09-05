@@ -1,4 +1,4 @@
-const SECTION_NAME: &str = "[Difficulty]";
+pub const SECTION_NAME: &str = "[Difficulty]";
 
 /// 谱面难度
 #[derive(Debug)]

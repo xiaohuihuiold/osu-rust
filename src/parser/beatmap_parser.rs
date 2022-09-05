@@ -1,4 +1,6 @@
-use crate::beatmap::beatmap_info::BeatmapInfo;
+use crate::beatmap::BeatmapInfo;
+use crate::beatmap::{difficulty, general, metadata};
+use regex::Regex;
 use std::fs::File;
 use std::io::{BufRead, BufReader};
 
@@ -18,9 +20,37 @@ impl Parser<BeatmapInfo, &str> for BeatmapInfo {
         let buf_reader = BufReader::new(file);
         let mut lines = buf_reader.lines();
         let beatmap_info = BeatmapInfo::default();
+        let section_regex = Regex::new(r"^\[(.*)\]$").unwrap();
 
         while let Some(Ok(line)) = lines.next() {
-            println!("{}", line);
+            let mut line = line.trim_end();
+            if line.starts_with('[') {
+                line = line.trim_start();
+            }
+            // 跳过空白行
+            if line.is_empty() {
+                continue;
+            }
+
+            match line {
+                general::SECTION_NAME => {
+                    // 一般信息
+                }
+                metadata::SECTION_NAME => {
+                    // 元数据
+                }
+                difficulty::SECTION_NAME => {
+                    // 难度
+                }
+                _ => {
+                    if section_regex.is_match(line) {
+                        // 未知的section
+                    } else {
+                        // 普通数据
+                        todo!();
+                    }
+                }
+            }
         }
 
         Ok(beatmap_info)

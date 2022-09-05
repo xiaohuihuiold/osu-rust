@@ -1,4 +1,4 @@
-const SECTION_NAME: &str = "[General]";
+pub const SECTION_NAME: &str = "[General]";
 
 /// 倒计时速度
 #[derive(Debug)]

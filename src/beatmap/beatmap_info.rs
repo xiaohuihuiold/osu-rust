@@ -1,10 +1,11 @@
-use crate::beatmap::difficulty::Difficulty;
-use crate::beatmap::general::General;
-use crate::beatmap::metadata::Metadata;
+use crate::beatmap::Difficulty;
+use crate::beatmap::General;
+use crate::beatmap::Metadata;
 
 /// 谱面
 #[derive(Debug)]
 pub struct BeatmapInfo {
+    format: Option<String>,
     general: Option<General>,
     metadata: Option<Metadata>,
     difficulty: Option<Difficulty>,
@@ -14,6 +15,7 @@ pub struct BeatmapInfo {
 impl Default for BeatmapInfo {
     fn default() -> Self {
         Self {
+            format: None,
             general: None,
             metadata: None,
             difficulty: None,

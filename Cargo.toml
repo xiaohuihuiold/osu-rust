@@ -10,3 +10,4 @@ license-file = "LICENSE"
 
 [dependencies]
 sdl2 = "0.35.2"
+regex = "1.6.0"
