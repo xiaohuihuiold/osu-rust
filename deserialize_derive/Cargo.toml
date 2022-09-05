@@ -1,12 +1,13 @@
 [package]
-name = "osu-rust"
+name = "deserialize_derive"
 version = "0.1.0"
 edition = "2021"
 authors = ["xiaohuihuiold <xiaohuihuiold@gmail.com>"]
 readme = "README.md"
-license-file = "LICENSE"
+
+[lib]
+proc-macro = true
 
 [dependencies]
-sdl2 = "0.35.2"
-regex = "1.6.0"
-deserialize_derive = { path = "./deserialize_derive" }
+quote = "1.0.21"
+syn = "1.0.99"
