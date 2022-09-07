@@ -1,0 +1,9 @@
+[package]
+name = "deserialize"
+version = "0.1.0"
+edition = "2021"
+authors = ["xiaohuihuiold <xiaohuihuiold@gmail.com>"]
+readme = "README.md"
+
+[dependencies]
+deserialize_derive = { path = "../deserialize_derive" }

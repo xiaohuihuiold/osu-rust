@@ -1,3 +1,4 @@
+use deserialize::DeserializeJson;
 use deserialize_derive::DeserializeJson;
 use std::collections::HashMap;
 use std::str::FromStr;
@@ -90,10 +91,6 @@ impl FromStr for OverlayPosition {
             _ => Err("Unknown".into()),
         }
     }
-}
-
-pub trait DeserializeJson {
-    fn from_json(json: &HashMap<String, String>) -> Self;
 }
 
 /// 谱面信息

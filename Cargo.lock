@@ -24,6 +24,13 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "baf1de4339761588bc0619e3cbc0120ee582ebb74b53b4efbf79117bd2da40fd"
 
 [[package]]
+name = "deserialize"
+version = "0.1.0"
+dependencies = [
+ "deserialize_derive",
+]
+
+[[package]]
 name = "deserialize_derive"
 version = "0.1.0"
 dependencies = [
@@ -53,6 +60,7 @@ checksum = "2dffe52ecf27772e601905b7522cb4ef790d2cc203488bbd0e2fe85fcb74566d"
 name = "osu-rust"
 version = "0.1.0"
 dependencies = [
+ "deserialize",
  "deserialize_derive",
  "regex",
  "sdl2",
