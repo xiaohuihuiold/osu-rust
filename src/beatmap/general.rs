@@ -5,7 +5,7 @@ use std::str::FromStr;
 pub const SECTION_NAME: &str = "[General]";
 
 /// 倒计时速度
-#[derive(Debug)]
+#[derive(Clone, Copy, Debug)]
 pub enum Countdown {
     None = 0,
     Normal = 1,
@@ -28,7 +28,7 @@ impl FromStr for Countdown {
 }
 
 /// 默认音效组
-#[derive(Debug)]
+#[derive(Clone, Copy, Debug)]
 pub enum SampleSet {
     Normal,
     Soft,
@@ -49,7 +49,7 @@ impl FromStr for SampleSet {
 }
 
 /// 游戏模式
-#[derive(Debug)]
+#[derive(Clone, Copy, Debug)]
 pub enum GameMode {
     Osu = 0,
     Taiko = 1,
@@ -72,7 +72,7 @@ impl FromStr for GameMode {
 }
 
 /// 皮肤覆盖层与数字层的关系
-#[derive(Debug)]
+#[derive(Clone, Copy, Debug)]
 pub enum OverlayPosition {
     NoChange,
     Below,
@@ -190,6 +190,6 @@ mod tests {
         map.insert("LetterboxInBreaks".into(), "1".into());
         map.insert("WidescreenStoryboard".into(), "1".into());
         let general = General::from_json(&map);
-        println!("{:?}", general);
+        println!("{:#?}", general);
     }
 }
