@@ -1,95 +1,49 @@
-use deserialize::DeserializeJson;
+use deserialize::{from_str_enum, from_str_enum_value, DeserializeJson};
 use deserialize_derive::DeserializeJson;
 use std::collections::HashMap;
 use std::str::FromStr;
 
 pub const SECTION_NAME: &str = "[General]";
 
-/// 倒计时速度
-#[derive(Clone, Copy, Debug)]
-pub enum Countdown {
-    None = 0,
-    Normal = 1,
-    Half = 2,
-    Double = 3,
-}
-
-impl FromStr for Countdown {
-    type Err = String;
-
-    fn from_str(s: &str) -> Result<Self, Self::Err> {
-        match s {
-            "0" => Ok(Countdown::None),
-            "1" => Ok(Countdown::Normal),
-            "2" => Ok(Countdown::Half),
-            "3" => Ok(Countdown::Double),
-            _ => Err("Unknown".into()),
-        }
+from_str_enum_value! {
+    /// 倒计时速度
+    #[derive(PartialEq, Eq, Clone, Copy, Debug)]
+    pub enum Countdown {
+        None = 0,
+        Normal = 1,
+        Half = 2,
+        Double = 3,
     }
 }
 
-/// 默认音效组
-#[derive(Clone, Copy, Debug)]
-pub enum SampleSet {
-    Normal,
-    Soft,
-    Drum,
-}
-
-impl FromStr for SampleSet {
-    type Err = String;
-
-    fn from_str(s: &str) -> Result<Self, Self::Err> {
-        match s {
-            "Normal" => Ok(SampleSet::Normal),
-            "Soft" => Ok(SampleSet::Soft),
-            "Drum" => Ok(SampleSet::Drum),
-            _ => Err("Unknown".into()),
-        }
+from_str_enum! {
+    /// 默认音效组
+    #[derive(PartialEq, Eq, Clone, Copy, Debug)]
+    pub enum SampleSet {
+        Normal,
+        Soft,
+        Drum,
     }
 }
 
-/// 游戏模式
-#[derive(Clone, Copy, Debug)]
-pub enum GameMode {
-    Osu = 0,
-    Taiko = 1,
-    Catch = 2,
-    Mania = 3,
-}
-
-impl FromStr for GameMode {
-    type Err = String;
-
-    fn from_str(s: &str) -> Result<Self, Self::Err> {
-        match s {
-            "0" => Ok(GameMode::Osu),
-            "1" => Ok(GameMode::Taiko),
-            "2" => Ok(GameMode::Catch),
-            "3" => Ok(GameMode::Mania),
-            _ => Err("Unknown".into()),
-        }
+from_str_enum_value! {
+    /// 游戏模式
+    #[derive(PartialEq, Eq, Clone, Copy, Debug)]
+    pub enum GameMode {
+        Osu = 0,
+        Taiko = 1,
+        Catch = 2,
+        Mania = 3,
     }
 }
 
-/// 皮肤覆盖层与数字层的关系
-#[derive(Clone, Copy, Debug)]
-pub enum OverlayPosition {
-    NoChange,
-    Below,
-    Above,
-}
-
-impl FromStr for OverlayPosition {
-    type Err = String;
-
-    fn from_str(s: &str) -> Result<Self, Self::Err> {
-        match s {
-            "NoChange" => Ok(OverlayPosition::NoChange),
-            "Below" => Ok(OverlayPosition::Below),
-            "Above" => Ok(OverlayPosition::Above),
-            _ => Err("Unknown".into()),
-        }
+from_str_enum! {
+    /// 皮肤覆盖层与数字层的关系
+    #[derive(PartialEq, Eq, Clone, Copy, Debug)]
+    pub enum OverlayPosition {
+        NoChange,
+        Below,
+        Above,
     }
 }
 
@@ -187,6 +141,6 @@ mod tests {
         map.insert("LetterboxInBreaks".into(), "1".into());
         map.insert("WidescreenStoryboard".into(), "1".into());
         let general = General::from_json(&map);
-        println!("{:#?}", general);
+        assert_eq!(general.mode, GameMode::Osu);
     }
 }

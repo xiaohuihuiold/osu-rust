@@ -1,13 +1,28 @@
+use deserialize::DeserializeJson;
+use deserialize_derive::DeserializeJson;
+use std::collections::HashMap;
+
 pub const SECTION_NAME: &str = "[Difficulty]";
 
 /// 谱面难度
-#[derive(Debug)]
+#[derive(DeserializeJson, Debug)]
 pub struct Difficulty {
+    #[json_value(name = "HPDrainRate")]
     pub hp_drain_rate: f64,
+
+    #[json_value(name = "CircleSize")]
     pub circle_size: f64,
+
+    #[json_value(name = "OverallDifficulty")]
     pub overall_difficulty: f64,
+
+    #[json_value(name = "ApproachRate")]
     pub approach_rate: f64,
+
+    #[json_value(name = "SliderMultiplier")]
     pub slider_multiplier: f64,
+
+    #[json_value(name = "SliderTickRate")]
     pub slider_tick_rate: f64,
 }
 
