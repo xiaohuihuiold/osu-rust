@@ -1,5 +1,4 @@
 use proc_macro::TokenStream;
-use std::any::type_name;
 use quote::quote;
 use syn::{Data, DeriveInput, Fields, Lit, Meta, MetaList, NestedMeta, Type};
 
@@ -57,7 +56,7 @@ pub fn impl_deserialize_json(ast: &DeriveInput) -> TokenStream {
                 "bool" => {
                     quote! {#name:json.get(#json_name).map_or(default.#name, |e| e == "1")}
                 }
-                "Vec"=>{
+                "Vec" => {
                     quote! {#name: json.get(#json_name).map_or(Vec::new(), |e| e.parse_list().unwrap_or(Vec::new()))}
                 }
                 _ => {

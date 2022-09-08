@@ -5,10 +5,10 @@ use crate::beatmap::Metadata;
 /// 谱面
 #[derive(Debug)]
 pub struct BeatmapInfo {
-    format: Option<String>,
-    general: Option<General>,
-    metadata: Option<Metadata>,
-    difficulty: Option<Difficulty>,
+    pub format: Option<String>,
+    pub general: Option<General>,
+    pub metadata: Option<Metadata>,
+    pub difficulty: Option<Difficulty>,
 }
 
 /// 默认信息
