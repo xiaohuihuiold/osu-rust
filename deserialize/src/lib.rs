@@ -4,10 +4,75 @@ pub trait DeserializeJson {
     fn from_json(json: &HashMap<String, String>) -> Self;
 }
 
+#[macro_export]
+macro_rules! from_str_enum {
+    ($(#[$meta:meta])* $vis:vis enum $name:ident {
+        $($(#[$value_meta:meta])* $value_name:ident $(= $value:expr)?,)*
+    }) => {
+        $(#[$meta])*
+        $vis enum $name {
+            $($(#[$value_meta])* $value_name $(= $value)?),*
+        }
+
+        impl FromStr for $name {
+            type Err = String;
+            fn from_str(s: &str) -> Result<Self, Self::Err> {
+                match s {
+                    $(stringify!($value_name) => Ok($name::$value_name),)*
+                    _ => Err("Unknown".into()),
+                }
+            }
+        }
+
+    };
+}
+
+#[macro_export]
+macro_rules! from_str_enum_value {
+    ($(#[$meta:meta])* $vis:vis enum $name:ident {
+        $($(#[$value_meta:meta])* $value_name:ident $(= $value:expr)?,)*
+    }) => {
+        $(#[$meta])*
+        $vis enum $name {
+            $($(#[$value_meta])* $value_name $(= $value)?),*
+        }
+
+        impl FromStr for $name {
+            type Err = String;
+            fn from_str(s: &str) -> Result<Self, Self::Err> {
+                match s {
+                    $(stringify!($($value)+) => Ok($name::$value_name),)*
+                    _ => Err("Unknown".into()),
+                }
+            }
+        }
+
+    };
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
     use deserialize_derive::DeserializeJson;
+    use std::str::FromStr;
+
+    from_str_enum! {
+        #[derive(PartialEq, Debug)]
+        enum Platform {
+            Windows,
+            Linux,
+            Mac,
+        }
+    }
+
+    from_str_enum_value! {
+        #[derive(PartialEq, Debug)]
+        enum PlatformValue {
+            Windows = 0,
+            Linux = 1,
+            Mac = 2,
+        }
+    }
 
     #[derive(DeserializeJson, Default, Debug)]
     struct User {
@@ -25,5 +90,15 @@ mod tests {
         let user = User::from_json(&map);
         assert_eq!(user.age, 100);
         assert_eq!(user.name, Some("test".into()));
+    }
+
+    #[test]
+    fn enum_form_str() {
+        assert_eq!(Platform::from_str("Windows"), Ok(Platform::Windows));
+    }
+
+    #[test]
+    fn enum_form_value() {
+        assert_eq!(PlatformValue::from_str("1"), Ok(PlatformValue::Linux));
     }
 }
