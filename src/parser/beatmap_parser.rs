@@ -18,92 +18,58 @@ pub trait Builder<I, R> {
     fn build(&self) -> R;
 }
 
+/// builder默认实现宏
+macro_rules! impl_builder {
+    ($($name:ty => $builder_name:ty,)+) => {$(
+        impl $builder_name {
+            pub fn new() -> Self {
+                Self {
+                    data: HashMap::new(),
+                }
+            }
+        }
+
+        impl Builder<String, $name> for $builder_name {
+            fn append(&mut self, input: &String) {
+                if let Some(index) = input.find(':') {
+                    let left = &input[..index];
+                    let right = &input[index + 1..];
+                    self.data.insert(
+                        String::from(left).trim().into(),
+                        String::from(right).trim().into(),
+                    );
+                }
+            }
+
+            fn build(&self) -> $name {
+                <$name>::from_json(&self.data)
+            }
+        })+
+    };
+}
+
 struct GeneralBuilder {
     data: HashMap<String, String>,
 }
 
-impl GeneralBuilder {
-    pub fn new() -> Self {
-        Self {
-            data: HashMap::new(),
-        }
-    }
-}
 struct MetadataBuilder {
     data: HashMap<String, String>,
 }
 
-impl MetadataBuilder {
-    pub fn new() -> Self {
-        Self {
-            data: HashMap::new(),
-        }
-    }
-}
 struct DifficultyBuilder {
     data: HashMap<String, String>,
 }
 
-impl DifficultyBuilder {
-    pub fn new() -> Self {
-        Self {
-            data: HashMap::new(),
-        }
-    }
-}
-
-impl Builder<String, General> for GeneralBuilder {
-    fn append(&mut self, input: &String) {
-        if let Some(index) = input.find(':') {
-            let left = &input[..index];
-            let right = &input[index + 1..];
-            self.data.insert(
-                String::from(left).trim().into(),
-                String::from(right).trim().into(),
-            );
-        }
-    }
-
-    fn build(&self) -> General {
-        General::from_json(&self.data)
-    }
-}
-impl Builder<String, Metadata> for MetadataBuilder {
-    fn append(&mut self, input: &String) {
-        if let Some(index) = input.find(':') {
-            let left = &input[..index];
-            let right = &input[index + 1..];
-            self.data.insert(
-                String::from(left).trim().into(),
-                String::from(right).trim().into(),
-            );
-        }
-    }
-
-    fn build(&self) -> Metadata {
-        Metadata::from_json(&self.data)
-    }
-}
-impl Builder<String, Difficulty> for DifficultyBuilder {
-    fn append(&mut self, input: &String) {
-        if let Some(index) = input.find(':') {
-            let left = &input[..index];
-            let right = &input[index + 1..];
-            self.data.insert(
-                String::from(left).trim().into(),
-                String::from(right).trim().into(),
-            );
-        }
-    }
-
-    fn build(&self) -> Difficulty {
-        Difficulty::from_json(&self.data)
-    }
+impl_builder! {
+    General => GeneralBuilder,
+    Metadata => MetadataBuilder,
+    Difficulty => DifficultyBuilder,
 }
 
 /// 解析构造枚举
 enum InfoBuilder {
     None,
+    First,
     General(GeneralBuilder),
     Metadata(MetadataBuilder),
     Difficulty(DifficultyBuilder),
@@ -124,7 +90,7 @@ impl Parser<&str, BeatmapInfo> for BeatmapInfo {
         let mut beatmap_info = BeatmapInfo::default();
         let section_regex = Regex::new(r"^\[(.*)\]$").unwrap();
 
-        let mut builder = InfoBuilder::None;
+        let mut builder = InfoBuilder::First;
 
         while let Some(Ok(line)) = lines.next() {
             let mut line = line.trim_end();
@@ -135,22 +101,13 @@ impl Parser<&str, BeatmapInfo> for BeatmapInfo {
             if line.is_empty() {
                 continue;
             }
+            // 遇到新的section时保存上一个
             if section_regex.is_match(line) {
-                match &builder {
-                    InfoBuilder::None => {}
-                    InfoBuilder::General(builder) => {
-                        beatmap_info.general = Some(builder.build());
-                    }
-                    InfoBuilder::Metadata(builder) => {
-                        beatmap_info.metadata = Some(builder.build());
-                    }
-                    InfoBuilder::Difficulty(builder) => {
-                        beatmap_info.difficulty = Some(builder.build());
-                    }
-                }
-                // 未知的section
+                build(&mut beatmap_info, &builder);
                 builder = InfoBuilder::None;
             }
+
+            // 生成构造器
             match line {
                 general::SECTION_NAME => {
                     // 一般信息
@@ -165,37 +122,49 @@ impl Parser<&str, BeatmapInfo> for BeatmapInfo {
                     builder = InfoBuilder::Difficulty(DifficultyBuilder::new());
                 }
                 _ => {
-                    if !section_regex.is_match(line) {
-                        // 普通数据
-                        match &mut builder {
-                            InfoBuilder::General(builder) => {
-                                builder.append(&String::from(line));
-                            }
-                            InfoBuilder::Metadata(builder) => {
-                                builder.append(&String::from(line));
-                            }
-                            InfoBuilder::Difficulty(builder) => {
-                                builder.append(&String::from(line));
-                            }
-                            InfoBuilder::None => {}
+                    // 跳过未知section
+                    if section_regex.is_match(line) {
+                        continue;
+                    }
+                    // 未当前builder追加数据
+                    match &mut builder {
+                        InfoBuilder::General(builder) => {
+                            builder.append(&String::from(line));
                         }
+                        InfoBuilder::Metadata(builder) => {
+                            builder.append(&String::from(line));
+                        }
+                        InfoBuilder::Difficulty(builder) => {
+                            builder.append(&String::from(line));
+                        }
+                        InfoBuilder::First => {
+                            beatmap_info.format = Some(String::from(line));
+                        }
+                        InfoBuilder::None => {}
                     }
                 }
             }
         }
-        match &builder {
-            InfoBuilder::None => {}
-            InfoBuilder::General(builder) => {
-                beatmap_info.general = Some(builder.build());
-            }
-            InfoBuilder::Metadata(builder) => {
-                beatmap_info.metadata = Some(builder.build());
-            }
-            InfoBuilder::Difficulty(builder) => {
-                beatmap_info.difficulty = Some(builder.build());
-            }
-        }
+
+        // 生成最后一次数据
+        build(&mut beatmap_info, &builder);
+
         Ok(beatmap_info)
+    }
+}
+
+fn build(beatmap_info: &mut BeatmapInfo, builder: &InfoBuilder) {
+    match builder {
+        InfoBuilder::General(builder) => {
+            beatmap_info.general = Some(builder.build());
+        }
+        InfoBuilder::Metadata(builder) => {
+            beatmap_info.metadata = Some(builder.build());
+        }
+        InfoBuilder::Difficulty(builder) => {
+            beatmap_info.difficulty = Some(builder.build());
+        }
+        InfoBuilder::None | InfoBuilder::First => {}
     }
 }
 
