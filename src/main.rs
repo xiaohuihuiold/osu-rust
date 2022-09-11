@@ -1,6 +1,7 @@
 mod beatmap;
 mod graphics;
 mod parser;
+mod storyboard;
 
 use sdl2::event::Event;
 use sdl2::keyboard::Keycode;

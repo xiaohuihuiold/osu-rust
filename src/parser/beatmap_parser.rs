@@ -1,5 +1,5 @@
-use crate::beatmap::{difficulty, general, metadata, Difficulty, Metadata};
-use crate::beatmap::{BeatmapInfo, General};
+use crate::beatmap::{difficulty, general, metadata};
+use crate::beatmap::{BeatmapInfo, Difficulty, General, Metadata};
 use deserialize::DeserializeJson;
 use regex::Regex;
 use std::collections::HashMap;
