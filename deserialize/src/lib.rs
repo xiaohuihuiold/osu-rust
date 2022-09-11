@@ -33,11 +33,11 @@ impl ParseList<String> for String {
 #[macro_export]
 macro_rules! from_str_enum {
     ($(#[$meta:meta])* $vis:vis enum $name:ident {
-        $($(#[$value_meta:meta])* $value_name:ident $(= $value:expr)?,)*
+        $($(#[$value_meta:meta])* $value_name:ident,)*
     }) => {
         $(#[$meta])*
         $vis enum $name {
-            $($(#[$value_meta])* $value_name $(= $value)?),*
+            $($(#[$value_meta])* $value_name),*
         }
 
         impl FromStr for $name {

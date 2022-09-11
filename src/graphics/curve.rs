@@ -1,15 +1,21 @@
-/// 动画曲线
-pub trait Curve {
-    const LINEAR: Linear = Linear {};
+use deserialize::from_str_enum_value;
+use std::str::FromStr;
 
-    fn apply(&self, t: f64) -> f64;
+from_str_enum_value! {
+    /// 曲线
+    #[derive(PartialEq, Eq, Clone, Copy, Debug)]
+    pub enum Curves {
+        Linear=0,
+    }
 }
 
-#[derive(Copy, Clone)]
-pub struct Linear;
+/// 动画曲线
+pub struct Curve;
 
-impl Curve for Linear {
-    fn apply(&self, t: f64) -> f64 {
-        t
+impl Curve {
+    fn apply(curve: Curves, t: f64) -> f64 {
+        match curve {
+            Curves::Linear => t,
+        }
     }
 }

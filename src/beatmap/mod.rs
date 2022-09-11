@@ -1,9 +1,9 @@
-pub mod beatmap_info;
-pub mod difficulty;
-pub mod general;
-pub mod metadata;
+mod beatmap_info;
+mod difficulty;
+mod general;
+mod metadata;
 
 pub use beatmap_info::BeatmapInfo;
 pub use difficulty::Difficulty;
-pub use general::General;
+pub use general::{Countdown, GameMode, General, OverlayPosition, SampleSet};
 pub use metadata::Metadata;
