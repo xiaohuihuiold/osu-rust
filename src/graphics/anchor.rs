@@ -1,4 +1,5 @@
 /// 锚点
+#[derive(Copy, Clone, Debug)]
 pub struct Anchor {
     x: f64,
     y: f64,
