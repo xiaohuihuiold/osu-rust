@@ -1,9 +1,10 @@
-use crate::graphics::lerp::LerpCopy;
+use crate::graphics::{Curve, Curves, LerpCopy};
 use sdl2::rect::Point;
 
 /// 实现对[Point]的lerp
-impl LerpCopy for Point {
-    fn lerp(a: Self, b: Self, t: f64) -> Self {
+impl LerpCopy<Point> for Point {
+    fn lerp_curve(a: Point, b: Point, t: f64, curve: Curves) -> Point {
+        let t = Curve::apply(curve, t);
         Point::new(i32::lerp(a.x(), b.x(), t), i32::lerp(a.y(), b.y(), t))
     }
 }

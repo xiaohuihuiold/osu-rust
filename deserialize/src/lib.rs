@@ -51,10 +51,7 @@ macro_rules! from_str_enum {
         }
 
     };
-}
 
-#[macro_export]
-macro_rules! from_str_enum_value {
     ($(#[$meta:meta])* $vis:vis enum $name:ident {
         $($(#[$value_meta:meta])* $value_name:ident $(= $value:expr)?,)*
     }) => {
@@ -91,7 +88,7 @@ mod tests {
         }
     }
 
-    from_str_enum_value! {
+    from_str_enum! {
         #[derive(PartialEq, Debug)]
         enum PlatformValue {
             Windows = 0,

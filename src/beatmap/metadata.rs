@@ -2,8 +2,6 @@ use deserialize::{DeserializeJson, ParseList};
 use deserialize_derive::DeserializeJson;
 use std::collections::HashMap;
 
-pub const SECTION_NAME: &str = "[Metadata]";
-
 /// 谱面元数据
 #[derive(DeserializeJson, Debug)]
 pub struct Metadata {
@@ -36,6 +34,10 @@ pub struct Metadata {
 
     #[json_value(name = "BeatmapSetID")]
     beatmap_set_id: i64,
+}
+
+impl Metadata {
+    pub const SECTION_NAME: &'static str = "[Metadata]";
 }
 
 /// 默认值填充

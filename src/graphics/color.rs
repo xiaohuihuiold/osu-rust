@@ -1,10 +1,11 @@
-use crate::graphics::lerp::LerpCopy;
+use crate::graphics::{Curve, Curves, LerpCopy};
 use sdl2::pixels::Color;
 
 /// 实现对[Color]的lerp
-impl LerpCopy for Color {
-    fn lerp(a: Self, b: Self, t: f64) -> Self {
-        Self::RGBA(
+impl LerpCopy<Color> for Color {
+    fn lerp_curve(a: Color, b: Color, t: f64, curve: Curves) -> Color {
+        let t = Curve::apply(curve, t);
+        Color::RGBA(
             u8::lerp(a.r, b.r, t),
             u8::lerp(a.g, b.g, t),
             u8::lerp(a.b, b.b, t),

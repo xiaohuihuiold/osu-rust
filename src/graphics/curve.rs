@@ -1,11 +1,11 @@
-use deserialize::from_str_enum_value;
+use deserialize::from_str_enum;
 use std::str::FromStr;
 
-from_str_enum_value! {
+from_str_enum! {
     /// 曲线
     #[derive(PartialEq, Eq, Clone, Copy, Debug)]
     pub enum Curves {
-        Linear=0,
+        Linear = 0,
     }
 }
 
@@ -13,7 +13,7 @@ from_str_enum_value! {
 pub struct Curve;
 
 impl Curve {
-    fn apply(curve: Curves, t: f64) -> f64 {
+    pub fn apply(curve: Curves, t: f64) -> f64 {
         match curve {
             Curves::Linear => t,
         }

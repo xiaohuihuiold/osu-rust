@@ -1,4 +1,3 @@
-use crate::beatmap::{difficulty, general, metadata};
 use crate::beatmap::{BeatmapInfo, Difficulty, General, Metadata};
 use deserialize::DeserializeJson;
 use regex::Regex;
@@ -109,15 +108,15 @@ impl Parser<&str, BeatmapInfo> for BeatmapInfo {
 
             // 生成构造器
             match line {
-                general::SECTION_NAME => {
+                General::SECTION_NAME => {
                     // 一般信息
                     builder = InfoBuilder::General(GeneralBuilder::new());
                 }
-                metadata::SECTION_NAME => {
+                Metadata::SECTION_NAME => {
                     // 元数据
                     builder = InfoBuilder::Metadata(MetadataBuilder::new());
                 }
-                difficulty::SECTION_NAME => {
+                Difficulty::SECTION_NAME => {
                     // 难度
                     builder = InfoBuilder::Difficulty(DifficultyBuilder::new());
                 }

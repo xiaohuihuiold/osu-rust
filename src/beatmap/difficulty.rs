@@ -2,8 +2,6 @@ use deserialize::DeserializeJson;
 use deserialize_derive::DeserializeJson;
 use std::collections::HashMap;
 
-pub const SECTION_NAME: &str = "[Difficulty]";
-
 /// 谱面难度
 #[derive(DeserializeJson, Debug)]
 pub struct Difficulty {
@@ -24,6 +22,10 @@ pub struct Difficulty {
 
     #[json_value(name = "SliderTickRate")]
     pub slider_tick_rate: f64,
+}
+
+impl Difficulty {
+    pub const SECTION_NAME: &'static str = "[Difficulty]";
 }
 
 /// 默认值

@@ -1,11 +1,9 @@
-use deserialize::{from_str_enum, from_str_enum_value, DeserializeJson};
+use deserialize::{from_str_enum, DeserializeJson};
 use deserialize_derive::DeserializeJson;
 use std::collections::HashMap;
 use std::str::FromStr;
 
-pub const SECTION_NAME: &str = "[General]";
-
-from_str_enum_value! {
+from_str_enum! {
     /// 倒计时速度
     #[derive(PartialEq, Eq, Clone, Copy, Debug)]
     pub enum Countdown {
@@ -26,7 +24,7 @@ from_str_enum! {
     }
 }
 
-from_str_enum_value! {
+from_str_enum! {
     /// 游戏模式
     #[derive(PartialEq, Eq, Clone, Copy, Debug)]
     pub enum GameMode {
@@ -97,6 +95,10 @@ pub struct General {
 
     #[json_value(name = "SamplesMatchPlaybackRate")]
     pub samples_match_playback_rate: bool,
+}
+
+impl General {
+    pub const SECTION_NAME: &'static str = "[General]";
 }
 
 /// 默认值填充
