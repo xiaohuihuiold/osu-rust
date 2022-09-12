@@ -1,6 +1,5 @@
-use crate::graphics::Anchor;
+use crate::graphics::{Anchor, Point};
 use crate::storyboard::Layer;
-use sdl2::rect::Point;
 
 /// Sprite对象
 #[derive(Debug)]
