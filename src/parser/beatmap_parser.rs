@@ -1,4 +1,5 @@
 use crate::beatmap::{BeatmapInfo, Difficulty, General, Metadata};
+use crate::storyboard::{StoryboardBuilder, StoryboardInfo};
 use deserialize::DeserializeJson;
 use regex::Regex;
 use std::collections::HashMap;
@@ -19,7 +20,11 @@ pub trait Builder<I, R> {
 
 /// builder默认实现宏
 macro_rules! impl_builder {
-    ($($name:ty => $builder_name:ty,)+) => {$(
+    ($($name:ident => $builder_name:ident,)+) => {$(
+        struct $builder_name {
+            data: HashMap<String, String>,
+        }
+
         impl $builder_name {
             pub fn new() -> Self {
                 Self {
@@ -47,18 +52,6 @@ macro_rules! impl_builder {
     };
 }
 
-struct GeneralBuilder {
-    data: HashMap<String, String>,
-}
-
-struct MetadataBuilder {
-    data: HashMap<String, String>,
-}
-
-struct DifficultyBuilder {
-    data: HashMap<String, String>,
-}
-
 impl_builder! {
     General => GeneralBuilder,
     Metadata => MetadataBuilder,
@@ -72,6 +65,7 @@ enum InfoBuilder {
     General(GeneralBuilder),
     Metadata(MetadataBuilder),
     Difficulty(DifficultyBuilder),
+    Storyboard(StoryboardBuilder),
 }
 
 /// 谱面解析
@@ -120,6 +114,10 @@ impl Parser<&str, BeatmapInfo> for BeatmapInfo {
                     // 难度
                     builder = InfoBuilder::Difficulty(DifficultyBuilder::new());
                 }
+                StoryboardInfo::SECTION_NAME => {
+                    // 事件
+                    builder = InfoBuilder::Storyboard(StoryboardBuilder::new());
+                }
                 _ => {
                     // 跳过未知section
                     if section_regex.is_match(line) {
@@ -134,6 +132,9 @@ impl Parser<&str, BeatmapInfo> for BeatmapInfo {
                             builder.append(&String::from(line));
                         }
                         InfoBuilder::Difficulty(builder) => {
+                            builder.append(&String::from(line));
+                        }
+                        InfoBuilder::Storyboard(builder) => {
                             builder.append(&String::from(line));
                         }
                         InfoBuilder::First => {
@@ -162,6 +163,9 @@ fn build(beatmap_info: &mut BeatmapInfo, builder: &InfoBuilder) {
         }
         InfoBuilder::Difficulty(builder) => {
             beatmap_info.difficulty = Some(builder.build());
+        }
+        InfoBuilder::Storyboard(builder) => {
+            beatmap_info.storyboard = Some(builder.build());
         }
         InfoBuilder::None | InfoBuilder::First => {}
     }

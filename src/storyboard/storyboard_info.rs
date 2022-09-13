@@ -10,3 +10,7 @@ pub struct StoryboardInfo {
     pub layer_pass: Vec<Sprite>,
     pub layer_foreground: Vec<Sprite>,
 }
+
+impl StoryboardInfo {
+    pub const SECTION_NAME: &'static str = "SECTION_NAME";
+}

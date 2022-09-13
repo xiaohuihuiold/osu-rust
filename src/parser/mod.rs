@@ -1,3 +1,3 @@
 mod beatmap_parser;
 
-pub use beatmap_parser::Parser;
+pub use beatmap_parser::{Builder, Parser};
