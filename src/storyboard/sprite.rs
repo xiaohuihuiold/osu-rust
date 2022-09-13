@@ -6,6 +6,6 @@ use crate::storyboard::Layer;
 pub struct Sprite {
     layer: Layer,
     anchor: Anchor,
-    path: String,
+    file_path: Option<String>,
     position: Point,
 }
