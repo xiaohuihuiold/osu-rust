@@ -8,8 +8,8 @@ mod storyboard_info;
 pub use background::{Background, BackgroundBuilder, BackgroundType};
 pub use builder::StoryboardBuilder;
 pub use commands::{
-    ColorCommand, FadeCommand, LoopCommand, MoveCommand, ParameterCommand, RotateCommand,
-    ScaleCommand,
+    ColorCommand, FadeCommand, LoopCommand, MoveCommand, MoveXCommand, MoveYCommand,
+    ParameterCommand, RotateCommand, ScaleCommand,
 };
 pub use layer::Layer;
 pub use sprite::Sprite;

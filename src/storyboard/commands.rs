@@ -6,6 +6,8 @@ pub struct FadeCommand {}
 
 /// 移动命令
 pub struct MoveCommand {}
+pub struct MoveXCommand {}
+pub struct MoveYCommand {}
 
 /// 缩放命令
 pub struct ScaleCommand {}
@@ -30,3 +32,23 @@ pub struct ParameterCommand {}
 
 /// 循环命令
 pub struct LoopCommand {}
+
+macro_rules! bind_type {
+    ($($name:ident => $type_name:expr,)+) => {$(
+        impl $name {
+            pub const TYPE: &'static str = $type_name;
+        })+
+    };
+}
+
+bind_type! {
+    FadeCommand => "F",
+    MoveCommand => "M",
+    MoveXCommand => "MX",
+    MoveYCommand => "MY",
+    ScaleCommand => "S",
+    RotateCommand => "R",
+    ColorCommand => "C",
+    ParameterCommand => "P",
+    LoopCommand => "L",
+}

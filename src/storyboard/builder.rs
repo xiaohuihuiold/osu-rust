@@ -1,6 +1,10 @@
 use crate::parser::Builder;
 use crate::storyboard::sprite::SpriteBuilder;
-use crate::storyboard::{Background, BackgroundBuilder, BackgroundType, Sprite, StoryboardInfo};
+use crate::storyboard::{
+    Background, BackgroundBuilder, BackgroundType, ColorCommand, FadeCommand, LoopCommand,
+    MoveCommand, MoveXCommand, MoveYCommand, ParameterCommand, RotateCommand, ScaleCommand, Sprite,
+    StoryboardInfo,
+};
 
 /// 构造器
 pub struct StoryboardBuilder {
@@ -36,6 +40,15 @@ impl Builder<String, StoryboardInfo> for StoryboardBuilder {
                 builder.append(&params);
                 self.storyboard.add_sprite(builder.build());
             }
+            FadeCommand::TYPE => {}
+            MoveCommand::TYPE => {}
+            MoveXCommand::TYPE => {}
+            MoveYCommand::TYPE => {}
+            ScaleCommand::TYPE => {}
+            RotateCommand::TYPE => {}
+            ColorCommand::TYPE => {}
+            ParameterCommand::TYPE => {}
+            LoopCommand::TYPE => {}
             Background::TYPE_IMAGE | Background::TYPE_VIDEO | Background::TYPE_VIDEO1 => {
                 // 背景图和视频
                 let mut builder = BackgroundBuilder::new();
