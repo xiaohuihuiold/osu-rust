@@ -1,6 +1,9 @@
 use deserialize::from_str_enum;
 use std::str::FromStr;
 
+/// 通用参数
+pub struct CommonCommand {}
+
 /// 透明度命令
 pub struct FadeCommand {}
 
