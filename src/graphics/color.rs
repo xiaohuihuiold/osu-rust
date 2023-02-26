@@ -11,24 +11,11 @@ pub struct Color {
 
 /// 颜色实现
 impl Color {
-    pub const RED: Color = Color {
-        r: 255,
-        g: 0,
-        b: 0,
-        a: 255,
-    };
-    pub const GREEN: Color = Color {
-        r: 0,
-        g: 255,
-        b: 0,
-        a: 255,
-    };
-    pub const BLUE: Color = Color {
-        r: 0,
-        g: 0,
-        b: 255,
-        a: 255,
-    };
+    pub const WHITE: Color = Color::rgb(255, 255, 255);
+    pub const BLACK: Color = Color::rgb(0, 0, 0);
+    pub const RED: Color = Color::rgb(255, 0, 0);
+    pub const GREEN: Color = Color::rgb(0, 255, 0);
+    pub const BLUE: Color = Color::rgb(0, 0, 255);
 
     pub fn rgb(r: u8, g: u8, b: u8) -> Self {
         Self::rgba(r, g, b, 255)
